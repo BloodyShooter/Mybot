@@ -15,7 +15,7 @@ public class InetIP {
      * @return Возврашает ip  строковом формате
      * Или null  случае возникновения Exception
      */
-    public String getInetIP() {
+    public static String getInetIP() {
 
         String ip = null;
 
