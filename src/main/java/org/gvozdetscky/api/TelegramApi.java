@@ -21,6 +21,8 @@ public class TelegramApi extends TelegramLongPollingBot {
 
             sendMsg(update.getMessage().getChatId().toString(), ip);
         }
+
+        System.out.println();
     }
 
     public synchronized void sendMsg(String chatId, String msg) {
