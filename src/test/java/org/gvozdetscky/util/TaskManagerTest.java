@@ -2,27 +2,31 @@ package org.gvozdetscky.util;
 
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.*;
 
 public class TaskManagerTest {
 
     @Test
     public void test() {
 
-        HashMap<Integer, String> processMap = new HashMap<>();
+        HashMap<Long, ProcessHandle> processMap = new HashMap<>();
 
         Stream<ProcessHandle> allProcesses = ProcessHandle.allProcesses();
 
         allProcesses.forEach(p -> {
-            System.out.println(p.pid() + p.info().toString());
+            if (p.info().command().isPresent()) {
+                System.out.println(p.info().command().toString());
+                if (p.info().command().get().contains("chrome.exe")) {
+                    processMap.put(p.pid(), p);
+                }
+            }
+
         });
+
+        processMap.forEach((k, p) -> p.destroy());
+
     }
 
     private static String text(Optional<?> optional) {
