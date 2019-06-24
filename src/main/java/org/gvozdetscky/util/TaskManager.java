@@ -12,13 +12,30 @@ public class TaskManager {
 
         allProcesses.forEach(p -> {
             if (p.info().command().isPresent()) {
-                System.out.println(p.info().command().toString());
-                str.append(p.info().command().toString()).append('\n');
+                str.append(p.info().command().get()).append('\n');
             }
 
         });
 
         return str.toString();
 
+    }
+
+    public static String killProcess(String nameProcess) {
+        Stream<ProcessHandle> allProcesses = ProcessHandle.allProcesses();
+
+        StringBuffer str = new StringBuffer();
+
+        allProcesses.forEach(p -> {
+            if (p.info().command().isPresent()) {
+                if (p.info().command().get().contains(nameProcess)) {
+                    p.destroy();
+                    str.append(p.info().command().get()).append("\n");
+                }
+            }
+
+        });
+
+        return str.toString();
     }
 }

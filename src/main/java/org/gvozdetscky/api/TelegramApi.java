@@ -19,6 +19,8 @@ public class TelegramApi extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         String message = update.getMessage().getText();
 
+        message = message.toLowerCase();
+
         if (message.equals("ip")) {
             String ip = InetIP.getInetIP();
 
@@ -33,7 +35,36 @@ public class TelegramApi extends TelegramLongPollingBot {
 
             String runProgramm = TaskManager.getRunProgramm();
 
+            if (runProgramm.length() > 4096) {
+
+                int size = 0;
+                int iter = 4096;
+
+                while (size < runProgramm.length()) {
+                    sendMsg(update.getMessage().getChatId().toString(), runProgramm.substring(size, iter));
+
+                    size += 4096;
+
+                    if (runProgramm.length() - size < 4096) {
+                        sendMsg(update.getMessage().getChatId().toString(), runProgramm.substring(size));
+                        break;
+                    }
+                }
+
+                return;
+
+            }
+
             sendMsg(update.getMessage().getChatId().toString(), runProgramm);
+        }
+
+        if (message.contains("kill")) {
+
+            var nameProcees = message.substring(5);
+
+            String listKillProgramm = TaskManager.killProcess(nameProcees);
+
+            sendMsg(update.getMessage().getChatId().toString(), listKillProgramm);
         }
 
         System.out.println();
